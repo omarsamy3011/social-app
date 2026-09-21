@@ -1,3 +1,4 @@
 /node_modules
 /src/config
-course-s3_accessKeys.csv
+course-s3_accessKeys.csvcourse-s3_accessKeys.csv 
+*.env 
