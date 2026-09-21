@@ -33,15 +33,21 @@
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "express-rate-limit": "^8.6.2",
+<<<<<<< HEAD
     "graphql": "^17.0.2",
     "graphql-http": "^1.23.0",
+=======
+>>>>>>> b65c5a9db5b3272040cd53c75db599dc68a1675e
     "helmet": "^8.3.0",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.9.2",
     "multer": "^2.2.0",
     "nodemailer": "^9.0.5",
     "redis": "^6.2.1",
+<<<<<<< HEAD
     "socket.io": "^4.8.3",
+=======
+>>>>>>> b65c5a9db5b3272040cd53c75db599dc68a1675e
     "zod": "^4.4.3"
   }
 }
