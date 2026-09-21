@@ -8,7 +8,9 @@ export const signupSchema = {
         password:z.string(),
         phone:z.string(),
         confirmPassword:z.string(),
-        profilepic:z.array(z.string()).optional()
+        profilepic:z.array(z.string()).optional(),
+        friends:z.array(z.string()).optional(),
+        friendrequests:z.array(z.string()).optional()
     }).superRefine((data,ctx)=>{
         if(data.password !== data.confirmPassword){
             ctx.addIssue('confirmpassword must match the password')

@@ -1,4 +1,4 @@
-import { Model } from "mongoose";
+import { Model,QueryFilter,PopulateOptions } from "mongoose";
 
 export class DatabaseReposatory<TRawDoc> {
 
@@ -11,7 +11,7 @@ export class DatabaseReposatory<TRawDoc> {
 
     findall({select,populate,lean}:{
         select?:string,
-        populate?:string,
+        populate?:object,
         lean?:boolean
     }){
         let query:any = this.model.find()
@@ -46,10 +46,10 @@ export class DatabaseReposatory<TRawDoc> {
         return query
     }
 
-    findone({filter,select,populate,lean}:{
-        filter:Partial<TRawDoc>
+    async findone({filter,select,populate,lean}:{
+        filter:QueryFilter<TRawDoc>
         select?:string,
-        populate?:string,
+        populate?:string | PopulateOptions |PopulateOptions[],
         lean?:boolean
     }){
         let query:any = this.model.findOne(filter)

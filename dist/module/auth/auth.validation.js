@@ -9,7 +9,9 @@ exports.signupSchema = {
         password: zod_1.z.string(),
         phone: zod_1.z.string(),
         confirmPassword: zod_1.z.string(),
-        profilepic: zod_1.z.array(zod_1.z.string()).optional()
+        profilepic: zod_1.z.array(zod_1.z.string()).optional(),
+        friends: zod_1.z.array(zod_1.z.string()).optional(),
+        friendrequests: zod_1.z.array(zod_1.z.string()).optional()
     }).superRefine((data, ctx) => {
         if (data.password !== data.confirmPassword) {
             ctx.addIssue('confirmpassword must match the password');

@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose, { Types } from 'mongoose'
 //import { IUser } from '../../common/interfaces/user.interface'
 import { genderEnum, IUser, providerEnum, roleEnum } from '../../common'
 
@@ -31,9 +31,18 @@ const userSchema = new mongoose.Schema<IUser>({
     provider:{
         type:Number,
         default:providerEnum.System
+    },
+    friends:{
+        type:Types.ObjectId,
+        ref:'user'
+    },
+    friendrequests:{
+        type:Types.ObjectId,
+        ref:'user'
     }
 },{
-    timestamps:true
+    timestamps:true,
+    toJSON:{virtuals:true}
 })
 
 userSchema.virtual('userName').set(function(userName){

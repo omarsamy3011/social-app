@@ -16,6 +16,9 @@ const util_1 = require("util");
 const stream_1 = require("stream");
 const s3service_1 = require("./common/service/s3service");
 const redisService_1 = require("./common/service/redisService");
+const express_2 = require("graphql-http/lib/use/express");
+const index_1 = require("./module/gql/index");
+const chat_controller_1 = __importDefault(require("./module/chat/chat.controller"));
 const bootstrap = async () => {
     const app = (0, express_1.default)();
     app.use(express_1.default.json());
@@ -39,10 +42,12 @@ const bootstrap = async () => {
     app.use(limiter);
     app.use((0, helmet_1.default)());
     app.use('/auth', auth_controller_1.default);
+    app.use('/chat', chat_controller_1.default);
     (0, connection_1.dbconnection)();
     await redisService_1.redisService.connectRedis();
+    app.all('/graphQL', (0, express_2.createHandler)({ schema: index_1.schema, context: (req) => ({ req }) }));
     app.use(errorHandling_1.globalErrorHandling);
-    app.listen(env_service_1.env.port, () => {
+    const httpserver = app.listen(env_service_1.env.port, () => {
         console.log(`server running on port ${env_service_1.env.port}`);
     });
 };

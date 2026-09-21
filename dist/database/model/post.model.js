@@ -34,55 +34,34 @@ var __importStar = (this && this.__importStar) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
-const common_1 = require("../../common");
-const userSchema = new mongoose_1.default.Schema({
-    firstName: String,
-    lastName: String,
-    email: {
-        type: String,
-        required: true,
-        unique: true
+const postSchema = new mongoose_1.default.Schema({
+    title: {
+        type: String
     },
-    phone: String,
-    password: String,
-    confirmPassword: String,
-    confirmEmail: {
-        type: Boolean,
-        default: false
+    content: {
+        type: String
     },
-    profilepic: {
+    userId: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: 'user',
+        required: true
+    },
+    comments: {
         type: [String]
     },
-    gender: {
-        type: Number,
-        default: common_1.genderEnum.Male
+    likes: {
+        type: [String]
     },
-    role: {
-        type: Number,
-        default: common_1.roleEnum.user
+    createdAt: {
+        type: Date,
+        default: null
     },
-    provider: {
-        type: Number,
-        default: common_1.providerEnum.System
-    },
-    friends: {
-        type: mongoose_1.Types.ObjectId,
-        ref: 'user'
-    },
-    friendrequests: {
-        type: mongoose_1.Types.ObjectId,
-        ref: 'user'
+    editedAt: {
+        type: Date,
+        default: null
     }
 }, {
-    timestamps: true,
-    toJSON: { virtuals: true }
+    timestamps: true
 });
-userSchema.virtual('userName').set(function (userName) {
-    let [firstName, lastName] = userName.split(' ');
-    this.firstName = firstName;
-    this.lastName = lastName;
-}).get(function () {
-    return `${this.firstName} ${this.lastName}`;
-});
-const userModel = mongoose_1.default.model('user', userSchema);
-exports.default = userModel;
+const postModel = mongoose_1.default.model('post', postSchema);
+exports.default = postModel;

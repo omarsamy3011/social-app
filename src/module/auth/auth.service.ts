@@ -21,7 +21,7 @@ class AuthService {
         this.tokenService = new TokenService()
     }
 
-    async signup(data:SignupDTO,file:Express.Multer.File){
+    async signup(data:IUser,file:Express.Multer.File){
         let user = await this.userReposatory.findone({filter:{email :data.email}})
         if(user){
             throw new BadRequestError('user already exist try another email')

@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { ZodType } from "zod";
-import { BadRequestError } from "../exceptions/error.exceptions";
+import { BadRequestError, mapGraphQL } from "../exceptions/error.exceptions";
 
 
 type validationkey = keyof Request
@@ -24,4 +24,15 @@ export const validation = (schema:validationSchema)=>{
             next()
         }
     }
+}
+
+
+export const graphQLValidation = (schema:ZodType,args:any)=>{
+    let result = schema.safeParse(args)
+    let errors = []
+    if(!result.success){
+        errors.push(result.error.issues)
+        throw mapGraphQL(new BadRequestError('invalid validation',{error:errors}))
+    }
+    return true
 }

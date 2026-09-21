@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validation = void 0;
+exports.graphQLValidation = exports.validation = void 0;
 const error_exceptions_1 = require("../exceptions/error.exceptions");
 const validation = (schema) => {
     return (req, res, next) => {
@@ -21,3 +21,13 @@ const validation = (schema) => {
     };
 };
 exports.validation = validation;
+const graphQLValidation = (schema, args) => {
+    let result = schema.safeParse(args);
+    let errors = [];
+    if (!result.success) {
+        errors.push(result.error.issues);
+        throw (0, error_exceptions_1.mapGraphQL)(new error_exceptions_1.BadRequestError('invalid validation', { error: errors }));
+    }
+    return true;
+};
+exports.graphQLValidation = graphQLValidation;

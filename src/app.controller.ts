@@ -11,6 +11,13 @@ import {promisify} from 'util'   ///for getfile from s3 bucket
 import { pipeline } from 'stream'  ///for getfile from s3 bucket
 import { s3service } from './common/service/s3service'
 import { redisService } from './common/service/redisService'
+import { createHandler } from 'graphql-http/lib/use/express';
+import { GraphQLObjectType, GraphQLSchema, GraphQLString } from 'graphql'
+import {schema} from './module/gql/index'
+import chatRouter from './module/chat/chat.controller'
+import { Server } from 'socket.io'
+import { TokenService } from './common/service/token'
+
 
 
 export const bootstrap = async()=>{
@@ -39,11 +46,16 @@ export const bootstrap = async()=>{
     app.use(limiter)
     app.use(helmet())
     app.use('/auth',authRouter)
+    app.use('/chat',chatRouter)
     dbconnection()
     await redisService.connectRedis()
     
+    app.all('/graphQL',createHandler({schema,context:(req)=>({req})}))
+
     app.use(globalErrorHandling)
-    app.listen(env.port,()=>{
+    const httpserver = app.listen(env.port,()=>{
         console.log(`server running on port ${env.port}`);
     })
+
+
 }

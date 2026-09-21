@@ -1,3 +1,5 @@
+import { GraphQLError } from "graphql"
+
 interface AError {
     message:string,
     status:number,
@@ -8,6 +10,10 @@ class ApplicationError extends Error implements AError {
     constructor(message:string,public status:number,cause?:unknown){
         super(message,{cause})
     }
+}
+
+export const mapGraphQL = (error:ApplicationError)=>{
+    throw new GraphQLError(error.message,{extensions:{statusCode:error.status,cause:error.cause||{}}})
 }
 
 export class BadRequestError extends ApplicationError {

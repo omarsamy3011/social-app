@@ -35,7 +35,7 @@ class DatabaseReposatory {
         }
         return query;
     }
-    findone({ filter, select, populate, lean }) {
+    async findone({ filter, select, populate, lean }) {
         let query = this.model.findOne(filter);
         if (select) {
             query = query.select(select);
