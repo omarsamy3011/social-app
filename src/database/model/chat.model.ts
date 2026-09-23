@@ -44,10 +44,10 @@ const messageSchema = new mongoose.Schema<IMessage>({
 })
 
 export const chatSchema = new mongoose.Schema<IChat>({
-    particepate:{
-        type:[Types.ObjectId],
+    particepate:[{
+        type:Types.ObjectId,
         ref:'user'
-    },
+    }],
     createdBy:{
         type:Types.ObjectId,
         ref:'user'
@@ -73,9 +73,9 @@ export const chatSchema = new mongoose.Schema<IChat>({
     },
     groupImage:{
         type:String,
-        required:function(this){
-            return this.type == 'ovm'
-        }
+        // required:function(this){
+        //     return this.type == 'ovm'
+        // }
     },
     createdAt:{
         type:Date,

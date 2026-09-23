@@ -9,8 +9,8 @@ class DatabaseReposatory {
     create(data) {
         return this.model.create(data);
     }
-    findall({ select, populate, lean }) {
-        let query = this.model.find();
+    async findall({ filter, select, populate, lean }) {
+        let query = this.model.find(filter || {});
         if (select) {
             query = query.select(select);
         }
@@ -20,7 +20,7 @@ class DatabaseReposatory {
         if (lean) {
             query = query.lean(lean);
         }
-        return query;
+        return await query;
     }
     findById({ id, select, populate, lean }) {
         let query = this.model.findById(id);
@@ -51,8 +51,14 @@ class DatabaseReposatory {
     updateone({ filter, data }) {
         return this.model.updateOne(filter, data);
     }
+    updateMany({ filter, data }) {
+        return this.model.updateMany(filter, data);
+    }
     deleteone({ filter }) {
         return this.model.findOneAndDelete(filter);
+    }
+    deleteById(id) {
+        return this.model.findByIdAndDelete(id);
     }
 }
 exports.DatabaseReposatory = DatabaseReposatory;

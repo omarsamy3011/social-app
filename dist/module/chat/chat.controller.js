@@ -9,4 +9,12 @@ router.get('/:particepantID', auth_middleware_1.auth, async (req, res) => {
     const data = await chat_service_1.chatservice.getChat(req.params.particepantID, req.user.id);
     (0, successresponce_1.successResponce)({ res, message: 'chat accessed', data });
 });
+router.post('/group', auth_middleware_1.auth, async (req, res) => {
+    let data = await chat_service_1.chatservice.addGroup(req.user.id, req.body);
+    (0, successresponce_1.successResponce)({ res, message: 'group created successfully', data });
+});
+router.get('/group/:groupID', auth_middleware_1.auth, async (req, res) => {
+    const data = await chat_service_1.chatservice.getGroupChat(req.params.groupID, req.user.id);
+    (0, successresponce_1.successResponce)({ res, message: 'groupChat Accessed', data });
+});
 exports.default = router;

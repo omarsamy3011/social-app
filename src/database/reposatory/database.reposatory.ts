@@ -9,12 +9,13 @@ export class DatabaseReposatory<TRawDoc> {
         return this.model.create(data)
     }
 
-    findall({select,populate,lean}:{
+    async findall({filter,select,populate,lean}:{
+        filter?:QueryFilter<TRawDoc>,
         select?:string,
         populate?:object,
         lean?:boolean
     }){
-        let query:any = this.model.find()
+        let query:any = this.model.find(filter || {})
         if(select){
             query = query.select(select)
         }
@@ -24,13 +25,13 @@ export class DatabaseReposatory<TRawDoc> {
         if(lean){
             query = query.lean(lean)
         }
-        return query
+        return await query
     }
 
     findById({id,select,populate,lean}:{
         id:string
         select?:string,
-        populate?:string,
+        populate?:string| PopulateOptions |PopulateOptions[],
         lean?:boolean
     }){
         let query:any = this.model.findById(id)
@@ -72,8 +73,19 @@ export class DatabaseReposatory<TRawDoc> {
         return this.model.updateOne(filter,data)
     }
 
+    updateMany({filter,data}:{
+        filter:any,
+        data:any
+    }){
+        return this.model.updateMany(filter,data)
+    }
+
     deleteone({filter}:{filter:any}){
         return this.model.findOneAndDelete(filter)
+    }
+
+    deleteById(id:string){
+        return this.model.findByIdAndDelete(id)
     }
 }
 // =======

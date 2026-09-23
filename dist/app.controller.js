@@ -19,6 +19,9 @@ const redisService_1 = require("./common/service/redisService");
 const express_2 = require("graphql-http/lib/use/express");
 const index_1 = require("./module/gql/index");
 const chat_controller_1 = __importDefault(require("./module/chat/chat.controller"));
+const user_controller_1 = __importDefault(require("./module/user/user.controller"));
+const friend_controller_1 = __importDefault(require("./module/friend/friend.controller"));
+const realTime_gateWay_1 = require("./module/realTime/realTime.gateWay");
 const bootstrap = async () => {
     const app = (0, express_1.default)();
     app.use(express_1.default.json());
@@ -43,6 +46,8 @@ const bootstrap = async () => {
     app.use((0, helmet_1.default)());
     app.use('/auth', auth_controller_1.default);
     app.use('/chat', chat_controller_1.default);
+    app.use('/user', user_controller_1.default);
+    app.use('/users/friends', friend_controller_1.default);
     (0, connection_1.dbconnection)();
     await redisService_1.redisService.connectRedis();
     app.all('/graphQL', (0, express_2.createHandler)({ schema: index_1.schema, context: (req) => ({ req }) }));
@@ -50,5 +55,6 @@ const bootstrap = async () => {
     const httpserver = app.listen(env_service_1.env.port, () => {
         console.log(`server running on port ${env_service_1.env.port}`);
     });
+    realTime_gateWay_1.realTimeGateway.initializer(httpserver);
 };
 exports.bootstrap = bootstrap;

@@ -76,10 +76,10 @@ const messageSchema = new mongoose_1.default.Schema({
     }
 });
 exports.chatSchema = new mongoose_1.default.Schema({
-    particepate: {
-        type: [mongoose_1.Types.ObjectId],
-        ref: 'user'
-    },
+    particepate: [{
+            type: mongoose_1.Types.ObjectId,
+            ref: 'user'
+        }],
     createdBy: {
         type: mongoose_1.Types.ObjectId,
         ref: 'user'
@@ -105,9 +105,6 @@ exports.chatSchema = new mongoose_1.default.Schema({
     },
     groupImage: {
         type: String,
-        required: function () {
-            return this.type == 'ovm';
-        }
     },
     createdAt: {
         type: Date,

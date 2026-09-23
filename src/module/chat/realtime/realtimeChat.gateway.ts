@@ -9,6 +9,7 @@ class chatGateWay {
 
     register (socket:any,io:any){
         this.chatevent.addMessage(socket,io)
+        this.chatevent.addGroupMessage(socket,io)
     }
 }
 

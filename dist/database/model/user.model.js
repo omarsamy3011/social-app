@@ -45,7 +45,6 @@ const userSchema = new mongoose_1.default.Schema({
     },
     phone: String,
     password: String,
-    confirmPassword: String,
     confirmEmail: {
         type: Boolean,
         default: false
@@ -65,24 +64,29 @@ const userSchema = new mongoose_1.default.Schema({
         type: Number,
         default: common_1.providerEnum.System
     },
-    friends: {
-        type: mongoose_1.Types.ObjectId,
-        ref: 'user'
-    },
-    friendrequests: {
-        type: mongoose_1.Types.ObjectId,
-        ref: 'user'
-    }
+    friends: [{
+            type: mongoose_1.Types.ObjectId,
+            ref: 'user'
+        }],
+    friendrequests: [{
+            type: mongoose_1.Types.ObjectId,
+            ref: 'user'
+        }],
+    groups: [{
+            type: mongoose_1.Types.ObjectId,
+            ref: 'chat'
+        }]
 }, {
     timestamps: true,
-    toJSON: { virtuals: true }
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
 });
 userSchema.virtual('userName').set(function (userName) {
     let [firstName, lastName] = userName.split(' ');
     this.firstName = firstName;
     this.lastName = lastName;
 }).get(function () {
-    return `${this.firstName} ${this.lastName}`;
+    return `${this.firstName || ''} ${this.lastName || ''}`.trim();
 });
 const userModel = mongoose_1.default.model('user', userSchema);
 exports.default = userModel;
