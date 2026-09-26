@@ -1,5 +1,4 @@
 import mongoose, { Types } from 'mongoose'
-//import { IUser } from '../../common/interfaces/user.interface'
 import { genderEnum, IUser, providerEnum, roleEnum } from '../../common'
 
 const userSchema = new mongoose.Schema<IUser>({

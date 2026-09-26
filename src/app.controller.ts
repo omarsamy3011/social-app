@@ -18,6 +18,7 @@ import chatRouter from './module/chat/chat.controller'
 import userRouter from './module/user/user.controller'
 import friendRouter from './module/friend/friend.controller'
 import postRouter from './module/posts/post.controller'
+import commentRouter from './module/comment/comment.controller'
 import { Server } from 'socket.io'
 import { TokenService } from './common/service/token'
 import { realTimeGateway } from './module/realTime/realTime.gateWay'
@@ -52,6 +53,7 @@ export const bootstrap = async()=>{
     app.use('/auth',authRouter)
     app.use('/chat',chatRouter)
     app.use('/user',userRouter)
+    app.use('/comments', commentRouter)
     app.use('/post',postRouter)
     app.use('/users/friends', friendRouter)
     dbconnection()

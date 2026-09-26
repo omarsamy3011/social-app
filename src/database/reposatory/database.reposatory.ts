@@ -12,7 +12,7 @@ export class DatabaseReposatory<TRawDoc> {
     async findall({filter,select,populate,lean}:{
         filter?:QueryFilter<TRawDoc>,
         select?:string,
-        populate?:object,
+        populate?:string| PopulateOptions |PopulateOptions[],
         lean?:boolean
     }){
         let query:any = this.model.find(filter || {})

@@ -2,6 +2,7 @@ import mongoose, { trusted, Types } from "mongoose";
 import { IPost } from "../../common/interfaces/post.interface";
 import userModel from "./user.model";
 import { string } from "zod";
+import { commentSchema } from "./comment.model";
 
 
 const postSchema = new mongoose.Schema<IPost>({
@@ -22,18 +23,7 @@ const postSchema = new mongoose.Schema<IPost>({
         ref:'user',
         required:true
     },
-    comments:[{
-        type:Object({
-            content:{
-                type:String,
-                required:true
-            },
-            userData:{
-                type:Types.ObjectId,
-                ref:'user',
-                required:true
-            }
-        })}],
+    comments:[commentSchema],
     likes:[{
         type:Types.ObjectId,
         ref:'user'

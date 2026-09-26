@@ -1,6 +1,5 @@
 import { Types } from "mongoose";
-
-
+import { IComment } from "./comment.interface";
 
 
 export interface IPost {
@@ -8,7 +7,7 @@ export interface IPost {
     attachments?: string[],
     content:string,
     createdBy:Types.ObjectId,
-    comments?:object[],
+    comments?:IComment[],
     likes?:Types.ObjectId[],
     createdAt?:Date,
     editedAt?:Date

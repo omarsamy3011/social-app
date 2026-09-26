@@ -1,5 +1,4 @@
-// src/database/model/friend.model.ts
-import  mongoose, { Schema, Document, Model, Types } from 'mongoose';
+import  mongoose, { Schema, Types } from 'mongoose';
 import { FriendStatusEnum } from '../../common/enums/friend.enum';
 import './user.model';
 import { IFriend } from '../../common/interfaces/friend.interface';
@@ -9,12 +8,12 @@ import { IFriend } from '../../common/interfaces/friend.interface';
 const friendSchema = new Schema<IFriend>(
   {
     sender: {
-      type: Schema.Types.ObjectId,
+      type: Types.ObjectId,
       ref: 'user',
       required: true,
     },
     receiver: {
-      type: Schema.Types.ObjectId,
+      type: Types.ObjectId,
       ref: 'user',
       required: true,
     },
