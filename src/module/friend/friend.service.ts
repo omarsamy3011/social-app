@@ -1,4 +1,4 @@
-import mongoose, { Types } from 'mongoose';
+import  { Types } from 'mongoose';
 import userModel from '../../database/model/user.model';
 import friendModel from '../../database/model/friend.model';
 import { FriendStatusEnum } from '../../common/enums/friend.enum';
@@ -17,26 +17,20 @@ class FriendService {
 
   async sendFriendRequest(senderId: string, recipientIdentifier: string) {
     let receiver;
-    // 1. Check if recipientIdentifier is a valid MongoDB ObjectId
     if (Types.ObjectId.isValid(recipientIdentifier)) {
       receiver = await this.userReposatory.findById({id:recipientIdentifier});
     }
-    // 2. If not found by ID, look up by email address
     if (!receiver) {
       receiver = await this.userReposatory.findone({filter:{ email: recipientIdentifier.toLowerCase().trim()} });
     }
     if (!receiver) {
       throw new NotFoundError('User not found with the provided ID or Email');
     }
-
     const receiverId = receiver._id.toString();
-
-    // 3. Prevent sending request to oneself
     if (senderId === receiverId) {
       throw new BadRequestError('You cannot send a friend request to yourself');
     }
 
-    // 4. Check if request or friendship already exists
     const existingFriendship = await friendModel.findOne({
       $or: [
         { sender: senderId, receiver: receiverId },
@@ -51,7 +45,6 @@ class FriendService {
       throw new BadRequestError('A friend request is already pending between you two');
     }
 
-    // 5. Create new friend request
     const newRequest = await this.friendReposatory.create({
       sender: new Types.ObjectId(senderId),
       receiver: new Types.ObjectId(receiverId),
@@ -61,9 +54,7 @@ class FriendService {
     return newRequest;
   }
 
-  /**
-   * Respond to a pending friend request (Accept or Reject)
-   */
+
   async respondToRequest(
     userId: string,
     friendId: string,
@@ -80,7 +71,6 @@ class FriendService {
       throw new NotFoundError('Pending friend request not found');
     }
 
-    // 2. Update status according to action
     if (payload.action === 'accepted') {
       friendship.status = FriendStatusEnum.ACCEPTED;
       await friendship.save();
@@ -91,7 +81,6 @@ class FriendService {
       throw new BadRequestError('Invalid action type');
     }
 
-    //add the friend in user friend array
     let user = await this.userReposatory.updateone({
       filter:{
         _id: new Types.ObjectId(userId)
@@ -99,7 +88,7 @@ class FriendService {
       data:{
         $addToSet:{ friends :new Types.ObjectId(friendId)}
       }
-    })    
+    })
     let friend = await this.userReposatory.updateone({
       filter:{
         _id: new Types.ObjectId(friendId)
