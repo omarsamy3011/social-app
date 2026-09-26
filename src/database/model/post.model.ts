@@ -1,30 +1,54 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { trusted, Types } from "mongoose";
 import { IPost } from "../../common/interfaces/post.interface";
 import userModel from "./user.model";
+import { string } from "zod";
 
 
 const postSchema = new mongoose.Schema<IPost>({
     title:{
-        type:String},
+        type:String,
+        required:true
+    },
     content:{
         type:String},
-    userId:{
-        type:Schema.Types.ObjectId,
+    attachments:[{
+        type:String,
+        required:function(this){
+            return this.content.length == 0
+        }
+    }],
+    createdBy:{
+        type:Types.ObjectId,
         ref:'user',
         required:true
     },
-    comments:{
-        type:[String]},
-    likes:{
-        type:[String]},
+    comments:[{
+        type:Object({
+            content:{
+                type:String,
+                required:true
+            },
+            userData:{
+                type:Types.ObjectId,
+                ref:'user',
+                required:true
+            }
+        })}],
+    likes:[{
+        type:Types.ObjectId,
+        ref:'user'
+    }],
     createdAt:{
         type:Date,
-        default:null},
+        default:Date.now()
+    },
     editedAt:{
         type:Date,
         default:null}},
         {
-            timestamps:true
+            timestamps:true,
+            toJSON:{virtuals:true},
+            toObject:{virtuals:true}
         }
 )
 

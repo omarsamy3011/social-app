@@ -5,10 +5,11 @@ import { Types } from "mongoose";
 
 export interface IPost {
     title:string,
+    attachments?: string[],
     content:string,
-    userId:Types.ObjectId,
-    comments:string[],
-    likes:string[],
-    createdAt:Date,
-    editedAt:Date
+    createdBy:Types.ObjectId,
+    comments?:object[],
+    likes?:Types.ObjectId[],
+    createdAt?:Date,
+    editedAt?:Date
 }
